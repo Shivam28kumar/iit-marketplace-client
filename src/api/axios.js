@@ -1,29 +1,31 @@
 // src/api/axios.js
 import axios from 'axios';
 
-// Create a new instance of axios which we will use for all our API calls.
+// --- THIS IS THE CRITICAL LOGIC ---
+// 'process.env.NODE_ENV' is a special variable that is automatically set to 'production' by Vercel when we deploy.
+// 'process.env.REACT_APP_API_URL' is the environment variable we set in the Vercel project settings.
+const API_URL = process.env.NODE_ENV === 'production'
+  ? `${process.env.REACT_APP_API_URL}/api` // In production, use the live Render URL.
+  : 'http://localhost:5000/api'; // In development (on your laptop), use the local server.
+
+// We log the API_URL to the console so we can easily debug which address is being used.
+console.log("API calls are being sent to:", API_URL);
+
+// Create the central axios instance with the correct base URL.
 const api = axios.create({
-  // THE FIX IS LIKELY HERE:
-  // Ensure the baseURL is correct. It must point to your backend server's address.
-  // It must include 'http://' and the port number (5000).
-  // It should NOT have a trailing slash.
-  baseURL: 'http://localhost:5000/api',
+  baseURL: API_URL,
 });
 
-// We use an interceptor to dynamically add the Authorization header to requests.
-// This is a powerful feature that keeps our component code clean.
+// The interceptor correctly adds the auth token to every request.
 api.interceptors.request.use(
   (config) => {
-    // This function runs BEFORE each request is sent.
     const token = localStorage.getItem('token');
     if (token) {
-      // If a token exists in localStorage, add it to the request headers.
       config.headers['Authorization'] = `Bearer ${token}`;
     }
-    return config; // Return the modified request config.
+    return config;
   },
   (error) => {
-    // This runs if there's an error setting up the request.
     return Promise.reject(error);
   }
 );
