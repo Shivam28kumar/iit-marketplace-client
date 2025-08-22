@@ -1,0 +1,83 @@
+/* src/components/chat/MessageContainer.css */
+.message-container {
+  display: flex;
+  flex-direction: column;
+  width: 70%; /* Takes up the right side of the chat page */
+  flex-grow: 1; /* Make it take up remaining space */
+}
+.chat-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #ddd;
+}
+.chat-header-info p {
+  margin: 0;
+}
+.chat-header-info .seller-name {
+  font-weight: bold;
+}
+.chat-header-info .product-title {
+  font-size: 0.9rem;
+  color: #555;
+}
+.chat-header-actions .call-button {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  font-weight: 500;
+  cursor: pointer;
+}
+/* In src/components/chat/MessageContainer.css */
+
+.messages-list {
+  flex-grow: 1; /* Allows the container to fill available vertical space */
+  padding: 1rem;
+  overflow-y: auto; /* Enables vertical scrolling when content overflows */
+  display: flex;
+  flex-direction: column; /* This is the standard: stack messages top-to-bottom */
+  gap: 0.5rem; /* Adds a little space between messages */
+}
+.no-chat-selected {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+  color: #888;
+}
+.no-chat-selected svg {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+/* In src/pages/ChatPage.css */
+
+.chat-container {
+  display: flex;
+  height: calc(100vh - 120px);
+  background-color: #4278ce; /* A light, neutral grey background */
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  overflow: hidden;
+  margin: 1rem auto; /* Give it some margin */
+  max-width: 1400px; /* Limit the max width on large screens */
+}
+
+/* ... rest of the CSS ... */
+/* In src/components/chat/MessageContainer.css */
+
+.messages-list {
+  flex-grow: 1;
+  padding: 1rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem; /* Adds space between message bubbles */
+  /* This helps push messages to the bottom when there are few */
+  justify-content: flex-end;
+}

@@ -1,0 +1,111 @@
+/* src/components/ProductCard.css */
+.product-card {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #fff;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 12px rgba(0,0,0,0.1);
+}
+
+.product-image {
+  width: 100%;
+  height: 180px;
+  object-fit: cover; /* Ensures the image covers the area without distortion */
+}
+
+.product-info {
+  padding: 1rem;
+  flex-grow: 1; /* Makes sure info area expands */
+}
+
+.product-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
+  color: #333;
+}
+
+.product-price {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #007bff;
+  margin: 0;
+}
+/* Add this to the end of src/components/ProductCard.css */
+.product-card-link {
+  text-decoration: none; /* Removes the underline from the link */
+  color: inherit; /* Makes the link inherit the text color */
+}
+/* Add these styles to the end of src/components/ProductCard.css */
+
+.product-card-controls {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 1rem;
+  border-top: 1px solid #eee;
+}
+
+.product-card-controls button {
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  font-weight: 500;
+  cursor: pointer;
+  width: 48%; /* Make buttons take up nearly half the space */
+}
+
+.edit-button {
+  background-color: #ffc107; /* Yellow */
+  color: #333;
+}
+
+.delete-button {
+  background-color: #dc3545; /* Red */
+  color: white;
+}
+
+/* We need to remove the link styling from the card itself */
+.product-card {
+  text-decoration: none;
+  color: inherit;
+}
+/* Add this to the end of src/components/ProductCard.css */
+.edit-button-link {
+  width: 48%;
+  display: block;
+  text-decoration: none;
+}
+.edit-button-link .edit-button {
+  width: 100%;
+}
+/* Add these styles to the end of src/components/ProductCard.css */
+
+/* --- Assured Badge Styling --- */
+.assured-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: #26a541; /* A trustworthy green */
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: bold;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+}
+
+/* Optional: Add a subtle border highlight to the entire card */
+.product-card.assured {
+  border: 2px solid #26a541;
+}

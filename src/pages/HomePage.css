@@ -1,0 +1,50 @@
+/* src/pages/HomePage.css */
+.homepage {
+  /* This parent class can remain as is */
+}
+
+/* --- THIS IS THE MAIN FIX --- */
+.carousel-container {
+  margin-bottom: 2.5rem;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+
+  /* We set a maximum height for the banner. 350px is a good, standard height. */
+  max-height: 350px;
+}
+
+/* 
+  We need to specifically target the image tag inside the library's generated classes.
+  This is the second part of the fix.
+*/
+.carousel-container .carousel .slide img {
+  /* This forces the image to fill the container's height. */
+  height: 350px; 
+  width: 100%;
+
+  /* This is the magic property. It crops the image to fit, instead of squishing it. */
+  object-fit: cover; 
+}
+/* --- END OF FIX --- */
+
+
+.homepage-title {
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 2rem;
+  color: #343a40;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+.no-products-message {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #666;
+  margin-top: 3rem;
+}

@@ -1,0 +1,141 @@
+/* src/pages/ProductDetailPage.css */
+
+.product-detail-container {
+  display: grid;
+  grid-template-columns: 1fr; /* Default for mobile */
+  gap: 2rem;
+  max-width: 1100px;
+  margin: 2rem auto;
+  padding: 1rem;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+}
+
+/* Use a two-column layout for larger screens */
+@media (min-width: 768px) {
+  .product-detail-container {
+    grid-template-columns: 1fr 1fr;
+    padding: 2rem;
+  }
+}
+
+.product-detail-image-wrapper {
+  width: 100%;
+}
+
+.product-detail-image {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  border: 1px solid #eee;
+}
+
+.product-detail-info-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.product-detail-title {
+  font-size: 2rem;
+  margin: 0 0 0.5rem 0;
+}
+
+.product-detail-price {
+  font-size: 1.75rem;
+  font-weight: bold;
+  color: #007bff;
+  margin-bottom: 1.5rem;
+}
+
+.product-detail-section {
+  margin-bottom: 1.5rem;
+}
+
+.product-detail-section h3 {
+  border-bottom: 2px solid #eee;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.contact-seller-button {
+  width: 100%;
+  padding: 1rem;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #fff;
+  background-color: #28a745;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-top: auto; /* Pushes the button to the bottom */
+}
+
+.contact-seller-button:hover {
+  background-color: #218838;
+}
+
+.product-not-found {
+  text-align: center;
+  padding: 4rem;
+}/* Add these styles to the end of src/pages/ProductDetailPage.css */
+
+/* --- New styles for the title and badge layout --- */
+.product-title-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 1rem; /* Adds space between the title and the badge */
+  flex-wrap: wrap; /* Allows badge to wrap below on small screens */
+  margin-bottom: 0.5rem;
+}
+
+.product-detail-title {
+  /* We remove the margin from the title itself to align it with the badge */
+  margin: 0;
+}
+
+/* --- Styling for the badge on the detail page --- */
+.assured-badge-detail {
+  background-color: #26a541; /* Same trustworthy green */
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+}
+/* Add these styles to the end of src/pages/ProductDetailPage.css */
+
+/* --- Share Button Styling --- */
+.share-button {
+  background: none;
+  border: 1px solid #ddd;
+  border-radius: 50%; /* Makes it a circle */
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #555;
+  transition: all 0.2s ease-in-out;
+  margin-left: auto; /* Pushes the button to the far right of the title wrapper */
+}
+
+.share-button:hover {
+  background-color: #f0f0f0;
+  color: #007bff;
+  border-color: #ccc;
+}
+
+/* We also need to adjust the title wrapper to accommodate the new button */
+.product-title-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.5rem;
+  width: 100%; /* Ensure it takes full width */
+}

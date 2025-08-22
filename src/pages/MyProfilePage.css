@@ -1,0 +1,23 @@
+/* src/pages/MyProfilePage.css */
+.profile-page {
+  max-width: 1100px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+.profile-details-card {
+  background-color: #fff;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  margin-bottom: 3rem;
+}
+.profile-details-card h2 {
+  margin-top: 0;
+  margin-bottom: 2rem;
+}
+.profile-listings h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+/* We can reuse form styles from SellPage.css */
+@import url('./SellPage.css');

@@ -1,38 +1,28 @@
+/* src/App.css */
+
+/* This sets up the main App container to be a flex column, which helps with footer placement */
 .App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  min-height: 100vh; /* Ensures the app takes up at least the full height of the viewport */
 }
 
-.App-link {
-  color: #61dafb;
+/* This is the main content area between the header and footer */
+main {
+  flex-grow: 1; /* Allows the main content to expand and push the footer down */
+  max-width: 1400px; /* Limits the width of the content on very wide screens */
+  width: 100%;
+  margin: 0 auto;
+  padding: 1.5rem;
+  box-sizing: border-box; /* Ensures padding is included in the width calculation */
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* --- OPTIONAL BUT RECOMMENDED: A Subtle "Page" Effect --- */
+/* We can make content sections look like they are on a white "page" over the grey background */
+/* For example, let's make the homepage content area have a white background and shadow */
+.homepage {
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
 }

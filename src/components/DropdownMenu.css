@@ -1,0 +1,56 @@
+/* src/components/DropdownMenu.css */
+.dropdown-menu {
+  position: absolute;
+  top: 100%; /* Position it right below the button */
+  right: 0;
+  background-color: white;
+  border-radius: 4px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  border: 1px solid #e0e0e0;
+  width: 240px;
+  z-index: 1000;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.dropdown-header {
+  padding: 1rem;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.dropdown-header-guest {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dropdown-header-guest p {
+  margin: 0;
+  font-weight: 500;
+}
+
+.dropdown-header-guest .signup-link {
+  font-weight: bold;
+  color: #007bff;
+  text-decoration: none;
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  padding: 0.8rem 1rem;
+  text-decoration: none;
+  color: #333;
+  transition: background-color 0.2s;
+}
+
+.dropdown-item:hover {
+  background-color: #f8f9fa;
+}
+
+.dropdown-item svg {
+  margin-right: 1rem;
+  font-size: 1.2rem;
+  color: #007bff;
+}

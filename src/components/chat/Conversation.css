@@ -1,0 +1,33 @@
+/* src/components/chat/Conversation.css */
+.conversation {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  border-bottom: 1px solid #f0f0f0;
+}
+.conversation:hover, .conversation.selected {
+  background-color: #eaf2ff;
+}
+.conversation-info {
+  margin-left: 0.75rem;
+}
+.conversation-info p {
+  margin: 0;
+}
+.conversation-name {
+  font-weight: 500;
+}
+.last-message {
+  font-size: 0.9rem;
+  color: #666;
+}
+/* Add this to src/components/chat/Conversation.css */
+.conversation-image {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}

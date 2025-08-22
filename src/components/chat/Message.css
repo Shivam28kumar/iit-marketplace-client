@@ -1,0 +1,40 @@
+/* src/components/chat/Message.css */
+.message {
+  display: flex;
+  max-width: 75%; /* Messages shouldn't be too wide */
+}
+
+.message-content {
+  padding: 0.7rem 1rem;
+  border-radius: 12px;
+  word-wrap: break-word; /* Allows long words to break and wrap */
+  color: #333; /* Default text color */
+  position: relative;
+}
+
+/* --- Sent Message (like WhatsApp/Instagram) --- */
+.sent {
+  align-self: flex-end; /* Pushes the whole container to the right */
+}
+.sent .message-content {
+  background-color: #dcf8c6; /* WhatsApp green */
+  border-bottom-right-radius: 2px;
+}
+
+/* --- Received Message --- */
+.received {
+  align-self: flex-start; /* Pushes the whole container to the left */
+}
+.received .message-content {
+  background-color: #ffffff; /* Plain white */
+  border: 1px solid #f0f0f0;
+  border-bottom-left-radius: 2px;
+}
+
+/* --- Timestamp --- */
+.message-timestamp {
+  font-size: 0.7rem;
+  color: #999;
+  margin-top: 4px;
+  text-align: right; /* Aligns the timestamp to the right of the bubble */
+}

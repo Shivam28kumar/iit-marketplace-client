@@ -1,0 +1,37 @@
+/* src/pages/CompanyDashboardPage.css */
+.company-dashboard {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 2rem;
+}
+.company-dashboard h1 {
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+.company-dashboard > p {
+  text-align: center;
+  color: #666;
+  margin-bottom: 3rem;
+}
+.dashboard-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+.dashboard-action-card {
+  background-color: #fff;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.dashboard-action-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+.dashboard-action-card h2 {
+  margin-top: 0;
+  color: #007bff;
+}
