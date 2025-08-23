@@ -35,3 +35,9 @@
   margin-top: 0;
   color: #007bff;
 }
+/* Add this at the end of src/pages/CompanyDashboardPage.css */
+@media (max-width: 768px) {
+  .dashboard-actions {
+    grid-template-columns: 1fr; /* Stack the cards vertically */
+  }
+}

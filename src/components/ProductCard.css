@@ -109,3 +109,29 @@
 .product-card.assured {
   border: 2px solid #26a541;
 }
+/* Add these styles to the end of src/components/ProductCard.css */
+
+/* --- Assured Badge Styling --- */
+.assured-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background-color: #26a541; /* A trustworthy green */
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: bold;
+  z-index: 10;
+}
+
+/* Optional: Add a subtle border highlight to the entire card */
+.product-card.assured {
+  border: 2px solid #26a541;
+}
+
+/* We also need to make sure the main card is a positioning context */
+.product-card {
+  position: relative; /* This is important for the badge's absolute positioning */
+  /* ... your other product-card styles ... */
+}

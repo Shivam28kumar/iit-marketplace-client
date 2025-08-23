@@ -153,4 +153,10 @@
 
 .add-college-form button:hover {
   background-color: #0056b3;
+}/* Add this at the end of src/pages/CompanyDashboardPage.css */
+/* Add this at the end of src/pages/AdminDashboardPage.css */
+@media (max-width: 992px) {
+  .college-management-grid, .banner-management-grid {
+    grid-template-columns: 1fr; /* Stack the tables and forms */
+  }
 }

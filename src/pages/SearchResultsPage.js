@@ -1,27 +1,46 @@
 // src/pages/SearchResultsPage.js
-import React, { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom'; // This hook reads URL query params
-import axios from 'axios';
+import React, { useState, useEffect, useContext } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import api from '../api/axios'; // Correctly imports our central api instance
 import ProductCard from '../components/ProductCard';
 import Spinner from '../components/Spinner';
-import './HomePage.css'; // We can reuse the homepage styles
+import { useAuthContext } from '../context/AuthContext';
+import './HomePage.css'; // Reusing the homepage styles
 
 const SearchResultsPage = () => {
+  // --- STATE AND CONTEXT ---
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchParams] = useSearchParams();
+  const { user } = useAuthContext(); // Get the logged-in user for the college filter
 
-  // Get the 'query' and 'category' from the URL, e.g., /search?query=bike&category=All
+  // --- DATA FETCHING ---
+  // Get the search terms from the URL query parameters
   const query = searchParams.get('query') || '';
   const category = searchParams.get('category') || 'All';
 
+  // This useEffect hook fetches products based on the search/filter criteria.
   useEffect(() => {
     const fetchProducts = async () => {
       setLoading(true);
+      
+      // Prepare the parameters for the API call
+      const params = {
+        search: query,
+        category: category,
+      };
+
+      // If a regular user is logged in, add their college to the search parameters.
+      // This ensures all searches are automatically localized for them.
+      if (user && user.role === 'user' && user.college) {
+        params.college = user.college.id;
+      }
+      
       try {
-        const { data } = await axios.get('http://localhost:5000/api/products', {
-          params: { search: query, category: category },
-        });
+        // --- THIS IS THE CRITICAL FIX ---
+        // We now correctly use our 'api' instance to make the request.
+        // The base URL is handled automatically.
+        const { data } = await api.get('/products', { params });
         setProducts(data);
       } catch (err) {
         console.error("Failed to fetch search results:", err);
@@ -31,12 +50,14 @@ const SearchResultsPage = () => {
     };
 
     fetchProducts();
-  }, [query, category]); // Re-run this effect whenever the query or category in the URL changes
+    // This hook re-runs whenever the search query, category, or logged-in user changes.
+  }, [query, category, user]);
 
+  // --- RENDER LOGIC ---
   return (
     <div className="homepage">
       <h1 className="homepage-title">
-        {query ? `Results for "${query}"` : 'All Products'}
+        {query ? `Results for "${query}"` : `Browsing ${category}`}
       </h1>
       
       {loading ? (
@@ -48,7 +69,7 @@ const SearchResultsPage = () => {
               <ProductCard key={product._id} product={product} />
             ))
           ) : (
-            <p className="no-products-message">No products found matching your search.</p>
+            <p className="no-products-message">No products found matching your criteria.</p>
           )}
         </div>
       )}
