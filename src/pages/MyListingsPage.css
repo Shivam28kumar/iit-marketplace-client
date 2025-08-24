@@ -1,33 +1,88 @@
 /* src/pages/MyListingsPage.css */
+
+/* --- Main Page Layout --- */
 .my-listings-page {
-  padding: 2rem 0;
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 1rem;
 }
+
 .my-listings-page h1 {
   text-align: center;
-  margin-bottom: 2rem;
+  font-size: 2.5rem;
+  margin-bottom: 2.5rem;
+  color: #333;
 }
+
+/* --- "No Listings" Prompt Styling --- */
 .no-listings {
   text-align: center;
-  padding: 3rem;
+  padding: 3rem 2rem;
+  margin-top: 2rem;
   border: 2px dashed #e0e0e0;
-  border-radius: 8px;
+  border-radius: 12px;
+  background-color: #fafafa;
 }
+
+.no-listings p {
+  font-size: 1.2rem;
+  color: #666;
+  margin: 0 0 1.5rem 0;
+}
+
+/* Reusing the .sell-button style for consistency */
 .no-listings .sell-button {
   display: inline-block;
-  margin-top: 1rem;
   background-color: #007bff;
   color: white;
   padding: 0.75rem 1.5rem;
   text-decoration: none;
-  border-radius: 5px;
+  border-radius: 6px;
   font-weight: 500;
+  transition: background-color 0.2s;
 }
-/* Add this to the end of src/pages/MyListingsPage.css */
+
+.no-listings .sell-button:hover {
+  background-color: #0056b3;
+}
+
+/* --- Category Section Styling (for CompanyListingsPage) --- */
 .category-section {
-    margin-bottom: 3rem;
+  margin-bottom: 3.5rem;
 }
+
 .category-section h2 {
-    border-bottom: 2px solid #eee;
-    padding-bottom: 0.5rem;
-    margin-bottom: 1.5rem;
+  font-size: 1.8rem;
+  color: #343a40;
+  border-bottom: 2px solid #f0f0f0;
+  padding-bottom: 0.75rem;
+  margin-bottom: 2rem;
+}
+
+/* --- Product Grid Styling --- */
+/* This is the same grid style used on the homepage for consistency */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+/* --- Mobile Responsiveness --- */
+/* This makes the grid two columns on mobile, like Flipkart */
+@media (max-width: 768px) {
+  .product-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+  .my-listings-page h1 {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  /* On very small screens, we can go to a single column if needed, but 2 often works well */
+  .product-grid {
+    /* You could change this to '1fr' if the two-column view is too crowded on small phones */
+    grid-template-columns: 1fr 1fr;
+  }
 }

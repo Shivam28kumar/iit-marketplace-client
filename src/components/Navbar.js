@@ -1,86 +1,80 @@
 // src/components/Navbar.js
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuthContext } from '../context/AuthContext';
+
+// Import all the components this Navbar uses
 import DropdownMenu from './DropdownMenu';
-import { FaSearch, FaUserCircle } from 'react-icons/fa';
+import SearchBar from './SearchBar';
+
+// Import icons and styles
+import { FaUserCircle } from 'react-icons/fa';
 import './Navbar.css';
 
+// --- MAIN NAVBAR COMPONENT ---
+// This component's main job is to structure the header.
 const Navbar = () => {
+  // We get the user from the global context to decide which user actions to show.
   const { user } = useAuthContext();
-  const navigate = useNavigate();
-  const [searchTerm, setSearchTerm] = useState('');
-  const [category, setCategory] = useState('All');
-
-  const handleSearchSubmit = (e) => {
-    e.preventDefault();
-    if (searchTerm.trim()) {
-        navigate(`/search?query=${searchTerm}&category=${category}`);
-    }
-  };
 
   return (
     <nav className="navbar">
+      {/* Left section: The clickable brand logo */}
       <Link to="/" className="navbar-brand">IIT Marketplace</Link>
       
-      <form className="header-search-form" onSubmit={handleSearchSubmit}>
-        <select value={category} onChange={(e) => setCategory(e.target.value)}>
-          <option value="All">All</option>
-          <option value="Bicycles">Bicycles</option>
-          <option value="Books">Books</option>
-          <option value="Electronics">Electronics</option>
-          <option value="Furniture">Furniture</option>
-          <option value="Other">Other</option>
-        </select>
-        <input
-          type="text"
-          placeholder="Search for products..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-        <button type="submit"><FaSearch /></button>
-      </form>
+      {/* Center section: The self-contained SearchBar component */}
+      <SearchBar />
 
+      {/* Right section: All user-related actions */}
       <div className="navbar-actions">
         {/*
-          THE FIX IS HERE:
-          We have removed all the extra conditional logic and buttons.
-          This section now correctly shows either the "Login" button for guests
-          OR the user dropdown trigger for logged-in users.
+          THE FIX: We apply the global 'btn' and 'btn-primary' classes for consistent styling.
+          We also add 'sell-button-header' so we can specifically hide it on mobile.
         */}
-        {user ? (
-            <DropdownTrigger />
-        ) : (
-            <Link to="/login" className="login-button-header">Login</Link>
-        )}
-        <Link to="/sell" className="sell-button">Sell an Item</Link>
+        <Link to="/sell" className="btn btn-primary sell-button-header">Sell an Item</Link>
+        
+        {/* We conditionally render either the Login button for guests or the DropdownTrigger for logged-in users */}
+        {user ? <DropdownTrigger /> : <Link to="/login" className="login-button-header">Login</Link>}
       </div>
     </nav>
   );
 };
 
-// A helper component to handle the dropdown logic
+
+// --- DROPDOWN TRIGGER HELPER COMPONENT ---
+// This sub-component manages all the state and logic for the user dropdown menu.
+// This logic is already perfect and requires no changes.
 const DropdownTrigger = () => {
     const [isDropdownVisible, setDropdownVisible] = useState(false);
     const { logout } = useAuthContext();
     const navigate = useNavigate();
+    const dropdownRef = useRef(null);
     
+    const handleToggleDropdown = () => setDropdownVisible(!isDropdownVisible);
+    const closeMenu = () => setDropdownVisible(false);
+
     const handleLogout = () => {
         logout();
-        setDropdownVisible(false);
+        closeMenu();
         navigate('/login');
     };
 
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                closeMenu();
+            }
+        };
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, [dropdownRef]);
+
     return (
-        <div 
-            className="navbar-profile-container" 
-            onMouseEnter={() => setDropdownVisible(true)} 
-            onMouseLeave={() => setDropdownVisible(false)}
-        >
-            <button className="profile-button">
+        <div ref={dropdownRef} className="navbar-profile-container">
+            <button onClick={handleToggleDropdown} className="profile-button">
                 <FaUserCircle /> Welcome!
             </button>
-            {isDropdownVisible && <DropdownMenu onLogout={handleLogout} />}
+            {isDropdownVisible && <DropdownMenu onLogout={handleLogout} closeMenu={closeMenu} />}
         </div>
     );
 };

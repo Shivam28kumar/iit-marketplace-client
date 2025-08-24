@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { useAuthContext } from '../context/AuthContext';
 import './DropdownMenu.css';
 
-// Import all the icons we need, including the ones for future features.
+// Import all the icons we need
 import {
   FaUserCircle,
   FaEnvelope,
@@ -16,7 +16,9 @@ import {
   FaGift
 } from 'react-icons/fa';
 
-const DropdownMenu = ({ onLogout }) => {
+// --- THIS IS THE FIX (Part 1) ---
+// We now accept a new function called 'closeMenu' as a prop from the Navbar.
+const DropdownMenu = ({ onLogout, closeMenu }) => {
   const { user, unreadCount } = useAuthContext();
 
   // --- GUEST VIEW ---
@@ -26,7 +28,8 @@ const DropdownMenu = ({ onLogout }) => {
         <div className="dropdown-header">
           <div className="dropdown-header-guest">
             <p>New customer?</p>
-            <Link to="/register" className="signup-link">Sign Up</Link>
+            {/* We also add the onClick handler here to close the menu on navigation */}
+            <Link to="/register" className="signup-link" onClick={closeMenu}>Sign Up</Link>
           </div>
         </div>
       </div>
@@ -34,12 +37,9 @@ const DropdownMenu = ({ onLogout }) => {
   }
 
   // --- LOGGED-IN USER VIEW ---
-
-  // Determine the correct link and text for the main dashboard item based on the user's role.
   let dashboardLink = "/my-profile";
   let dashboardText = "My Profile";
   let DashboardIcon = FaUserCircle;
-
   if (user.role === 'admin') {
     dashboardLink = "/admin";
     dashboardText = "Admin Dashboard";
@@ -52,41 +52,38 @@ const DropdownMenu = ({ onLogout }) => {
 
   return (
     <div className="dropdown-menu">
-      {/* This link now dynamically points to the correct dashboard for each user role. */}
-      <Link to={dashboardLink} className="dropdown-item">
+      {/* --- THIS IS THE FIX (Part 2) --- */}
+      {/* Every clickable <Link> now has an onClick handler that calls the closeMenu function. */}
+      {/* This ensures the dropdown disappears as soon as you navigate to a new page. */}
+      <Link to={dashboardLink} className="dropdown-item" onClick={closeMenu}>
         <DashboardIcon /> {dashboardText}
       </Link>
       
-      {/* This link takes any logged-in user to their chat page. */}
-      <Link to="/chat" className="dropdown-item">
+      <Link to="/chat" className="dropdown-item" onClick={closeMenu}>
         <div className="messages-link">
             <span><FaEnvelope /> Messages</span>
             {unreadCount > 0 && <span className="notification-badge">{unreadCount}</span>}
         </div>
       </Link>
       
-      {/* 
-        We will show the main user-centric links (My Listings, Orders, etc.)
-        ONLY to regular users. Admins and Companies have their own dashboards for these tasks.
-      */}
       {user.role === 'user' && (
         <>
-          <Link to="/my-listings" className="dropdown-item">
+          <Link to="/my-listings" className="dropdown-item" onClick={closeMenu}>
             <FaBoxOpen /> My Listed Items
           </Link>
-          <Link to="#" className="dropdown-item">
+          <Link to="#" className="dropdown-item" onClick={closeMenu}>
             <FaHeart /> Orders
           </Link>
-          <Link to="#" className="dropdown-item">
+          <Link to="#" className="dropdown-item" onClick={closeMenu}>
             <FaPlusSquare /> Plus Zone
           </Link>
-          <Link to="#" className="dropdown-item">
+          <Link to="#" className="dropdown-item" onClick={closeMenu}>
             <FaGift /> Gift Cards
           </Link>
         </>
       )}
       
-      {/* The logout button is visible to all logged-in users. */}
+      {/* The onLogout function already handles closing the menu, so no change is needed here. */}
       <div onClick={onLogout} className="dropdown-item" style={{ cursor: 'pointer' }}>
         <FaSignOutAlt /> Logout
       </div>

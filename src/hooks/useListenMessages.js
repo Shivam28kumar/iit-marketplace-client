@@ -2,32 +2,39 @@
 import { useEffect, useContext } from 'react';
 import { SocketContext } from '../context/SocketContext';
 import { useConversation } from '../context/ConversationContext';
-import notificationSound from '../assets/sounds/notification.mp3'; // We'll add this sound file
+import { useAuthContext } from '../context/AuthContext';
+import notificationSound from '../assets/sounds/notification.mp3';
 
 const useListenMessages = () => {
-  const socket = useContext(SocketContext); // Get the connected socket
-  const { messages, setMessages } = useConversation(); // Get the global messages state
+  const socket = useContext(SocketContext);
+  
+  // --- THIS IS THE FIX ---
+  // We no longer need to get the 'messages' variable here. We only need the setter function.
+  const { setMessages, selectedConversation } = useConversation();
+  
+  const { fetchUnreadCount } = useAuthContext();
 
   useEffect(() => {
-    // Make sure we have a socket connection before listening
     if (socket) {
-      // Start listening for the 'newMessage' event from the server
-      socket.on("newMessage", (newMessage) => {
-        // Play a notification sound
+      const messageListener = (newMessage) => {
+        // Play sound and refresh the unread count in the navbar
         const sound = new Audio(notificationSound);
         sound.play();
-        
-        // Add the new message to our global message state
-        // This will cause any component using this state to re-render
-        setMessages([...messages, newMessage]);
-      });
+        fetchUnreadCount();
 
-      // --- IMPORTANT: Clean up the event listener ---
-      // This is a best practice to prevent memory leaks and duplicate listeners.
-      // When the component unmounts, we stop listening.
-      return () => socket.off("newMessage");
+        // Use the functional update form to avoid stale state.
+        // This is a robust way to update the state based on its previous value.
+        setMessages((prevMessages) => [...prevMessages, newMessage]);
+      };
+
+      socket.on("newMessage", messageListener);
+
+      // Cleanup function to remove the event listener when the component unmounts.
+      return () => {
+        socket.off("newMessage", messageListener);
+      };
     }
-  }, [socket, setMessages, messages]); // The hook re-runs if any of these dependencies change
+  }, [socket, setMessages, selectedConversation, fetchUnreadCount]); // Dependencies for the effect
 };
 
 export default useListenMessages;

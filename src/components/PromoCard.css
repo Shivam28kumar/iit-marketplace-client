@@ -1,0 +1,32 @@
+/* src/components/PromoCard.css */
+.promo-card {
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin: var(--space-8) 0; /* Add margin top and bottom */
+  box-shadow: var(--shadow-lg);
+}
+.promo-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  max-height: 300px; /* Control the height */
+  object-fit: cover;
+}
+.promo-overlay {
+  position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.2) 100%);
+}
+.promo-content {
+  position: absolute; top: 50%; left: 5%;
+  transform: translateY(-50%);
+  color: var(--white);
+  padding-right: 1rem;
+}
+.promo-content h2 { font-size: 2rem; margin: 0 0 var(--space-4) 0; }
+.promo-content p { font-size: 1.1rem; margin: 0 0 var(--space-6) 0; }
+
+@media (max-width: 768px) {
+  .promo-content h2 { font-size: 1.5rem; }
+  .promo-content p { font-size: 1rem; margin-bottom: var(--space-4); }
+}

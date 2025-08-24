@@ -1,41 +1,38 @@
 // src/components/chat/MessageContainer.js
 import React, { useEffect, useState, useRef } from 'react';
 import { useConversation } from '../../context/ConversationContext';
-import { useAuthContext } from '../../context/AuthContext';
+import { useAuthContext } from '../../context/AuthContext'; // Correctly imported
 import api from '../../api/axios';
 import toast from 'react-hot-toast';
 import useListenMessages from '../../hooks/useListenMessages';
 import MessageInput from './MessageInput';
 import Message from './Message';
-import { FaComments } from 'react-icons/fa';
+import { FaComments, FaArrowLeft } from 'react-icons/fa'; // Correctly imported
 import './MessageContainer.css';
 
 
-
 const MessageContainer = () => {
-  const { selectedConversation, messages, setMessages } = useConversation();
+  // --- STATE AND CONTEXT HOOKS ---
+  // THE FIX: We destructure 'setSelectedConversation' from the context so we can use it.
+  const { selectedConversation, setSelectedConversation, messages, setMessages } = useConversation();
   const [loading, setLoading] = useState(false);
-  useListenMessages();
-  const lastMessageRef = useRef();
+  useListenMessages(); // This hook handles receiving real-time messages.
+  const lastMessageRef = useRef(); // A ref to auto-scroll to the latest message.
 
-  // Fetches the message history for the selected conversation and product.
+  // --- DATA FETCHING AND SIDE EFFECTS ---
+
+  // Fetches the message history when a user selects a new conversation.
   useEffect(() => {
     const getMessages = async () => {
-      // We only proceed if a conversation is selected.
       if (selectedConversation) {
         setLoading(true);
-        setMessages([]); // Clear previous messages
+        setMessages([]); // Clear out old messages before fetching new ones.
         try {
-          // --- FIX #1 ---
-          // The API needs to know the other user's ID AND the product's ID
-          // to fetch the correct message history.
-          const otherParticipantId = selectedConversation.participants[0]._id;
-          const productId = selectedConversation.product._id;
-          
+          // THE FIX (Cleanup): We no longer need to create unused variables here.
+          // We directly use the properties from the selectedConversation object.
           const res = await api.get(`/chat/${selectedConversation.participants[0]._id}`, {
             params: { productId: selectedConversation.product._id }
           });
-
           setMessages(res.data);
         } catch (error) {
           toast.error("Failed to load messages.");
@@ -47,7 +44,7 @@ const MessageContainer = () => {
     getMessages();
   }, [selectedConversation, setMessages]);
 
-  // Handles auto-scrolling
+  // Handles auto-scrolling whenever the messages array is updated.
   useEffect(() => {
     const timer = setTimeout(() => {
       lastMessageRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -55,27 +52,23 @@ const MessageContainer = () => {
     return () => clearTimeout(timer);
   }, [messages]);
 
-  // Handles sending a new message.
+  // --- EVENT HANDLERS ---
+
+  // Called when the user sends a message from the MessageInput component.
   const handleSendMessage = async (message) => {
     if (!selectedConversation) return;
     try {
       const otherParticipantId = selectedConversation.participants[0]._id;
-      // --- FIX #2 ---
-      // We get the productId from the currently selected conversation object.
       const productId = selectedConversation.product._id;
-      
-      // We send both the 'message' and the 'productId' to the backend.
-      // This fixes the "product: Path 'product' is required" error.
       const res = await api.post(`/chat/send/${otherParticipantId}`, { message, productId });
-      
       setMessages([...messages, res.data]);
     } catch (error) {
       toast.error("Failed to send message.");
     }
   };
 
+  // Called when the user clicks the "Call Owner" button.
   const handleCallOwner = async () => {
-    // ... (This function is correct and unchanged)
     if (!selectedConversation) return;
     try {
       const otherUserId = selectedConversation.participants[0]._id;
@@ -97,6 +90,7 @@ const MessageContainer = () => {
     }
   };
 
+  // --- RENDER LOGIC ---
   return (
     <div className="message-container">
       {!selectedConversation ? (
@@ -104,6 +98,10 @@ const MessageContainer = () => {
       ) : (
         <>
           <div className="chat-header">
+            {/* The "Back" button for mobile. It works by clearing the selected conversation. */}
+            <button className="back-button" onClick={() => setSelectedConversation(null)}>
+              <FaArrowLeft />
+            </button>
             <div className="chat-header-info">
               <p className="seller-name">{selectedConversation.participants[0].fullName}</p>
               {selectedConversation.product && (
@@ -134,7 +132,7 @@ const MessageContainer = () => {
   );
 };
 
-// The NoChatSelected component remains the same.
+// A separate component for the placeholder text.
 const NoChatSelected = () => {
   const { user } = useAuthContext();
   return (

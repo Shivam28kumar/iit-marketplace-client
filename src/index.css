@@ -1,45 +1,108 @@
 /* src/index.css */
 
-/* We apply the base font and background color to the body tag */
+/* --- STEP 1: DEFINE ALL DESIGN TOKENS --- */
+/* We define these variables on the :root so they are globally available */
+:root {
+  /* Color Tokens (as per your plan) */
+  --brand-600: #ff7a00; /* Primary Orange */
+  --brand-700: #e56e00; /* Darker Orange for Hover */
+  --dark-header: #0f172a; /* Slate-900 */
+  --body-bg: #f7f7fb; /* Light background */
+  --text-dark: #0b0b0f; /* Main text on light backgrounds */
+  --text-light: #e5e7eb; /* Main text on dark backgrounds */
+  --text-muted: #6c757d; /* Grey for secondary text */
+  --success: #16a34a;
+  --warning: #f59e0b;
+  --error: #dc2626;
+  --white: #ffffff;
+  --border-color: #dee2e6;
+
+  /* Spacing Tokens (using a 4px base) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+
+  /* Radii (Border Radius) Tokens */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+
+  /* Shadow Tokens */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -2px rgb(0 0 0 / 0.1);
+}
+
+
+/* --- STEP 2: APPLY GLOBAL STYLES --- */
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue',
-    Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
-  /* --- THIS IS THE NEW BACKGROUND --- */
-  /* This is a very light, almost white grey. It's much softer on the eyes than pure #fff white. */
-  background-color: #f1f2f6;
+  
+  /* Apply our new tokens */
+  background-color: var(--body-bg);
+  color: var(--text-dark);
 }
 
-/* We can also add a global style for our code snippets if needed */
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-
-}
-/* Add this to the end of src/index.css */
+/* A helper class for custom toasts */
 .call-toast {
-  background: white;
-  padding: 16px;
-  border-radius: 8px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  background: var(--white);
+  padding: var(--space-4);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-lg);
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: var(--space-4);
 }
-.call-toast a {
-  background-color: #28a745;
-  color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 5px;
-  text-decoration: none;
-}
-.call-toast button {
-  background: none;
-  border: 1px solid #ccc;
-  padding: 0.5rem 1rem;
-  border-radius: 5px;
+
+/* Add this to the end of src/index.css */
+
+/* --- GLOBAL BUTTON STYLES --- */
+/* A base style for all buttons to reset browser defaults */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-3) var(--space-5);
+  font-size: 1rem;
+  font-weight: 500;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
   cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s ease-in-out;
+  min-height: 44px; /* For accessibility */
+  min-width: 44px;  /* For accessibility */
+}
+
+/* Primary Button Style (e.g., "Sell an Item") */
+.btn-primary {
+  background-color: var(--brand-600);
+  color: var(--white);
+}
+.btn-primary:hover {
+  background-color: var(--brand-700);
+}
+
+/* Secondary Button Style (e.g., an outline button) */
+.btn-secondary {
+  background-color: transparent;
+  color: var(--brand-600);
+  border-color: var(--brand-600);
+}
+.btn-secondary:hover {
+  background-color: var(--brand-600);
+  color: var(--white);
+}
+
+/* Focus Ring for Accessibility */
+.btn:focus-visible {
+  outline: 2px solid var(--brand-600);
+  outline-offset: 2px;
 }

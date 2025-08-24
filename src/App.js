@@ -2,6 +2,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
+import BottomNav from './components/BottomNav';
 
 // Import all layout, page, and route components
 import Navbar from './components/Navbar';
@@ -72,6 +73,7 @@ function App() {
           </Routes>
         </main>
         <Footer />
+        <BottomNav />
       </div>
     </Router>
   );

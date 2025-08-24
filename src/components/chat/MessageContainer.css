@@ -81,3 +81,17 @@
   /* This helps push messages to the bottom when there are few */
   justify-content: flex-end;
 }
+back-button {
+          display: none; /* Hidden on desktop */
+          background: none;
+          border: none;
+          font-size: 1.5rem;
+          cursor: pointer;
+          color: #333;
+          margin-right: 1rem;
+        }
+        @media (max-width: 768px) {
+          .back-button {
+            display: block; /* Visible on mobile */
+          }
+        }

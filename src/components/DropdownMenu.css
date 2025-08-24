@@ -1,41 +1,37 @@
 /* src/components/DropdownMenu.css */
 .dropdown-menu {
   position: absolute;
-  top: 100%; /* Position it right below the button */
-  right: 0;
+  top: 110%; 
+  left: 0;
   background-color: white;
-  border-radius: 4px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
   border: 1px solid #e0e0e0;
-  width: 240px;
-  z-index: 1000;
-  overflow: hidden;
+  width: 250px;
+  
+  /* --- CRITICAL FIX #1 --- */
+  /* We keep the high z-index to ensure it renders on top of other page content. */
+  z-index: 9999;
+  
+  /* --- CRITICAL FIX #2 --- */
+  /* We REMOVE 'overflow: hidden'. This was preventing the content from being fully visible if the menu itself had a shadow or complex border. */
+  
   display: flex;
   flex-direction: column;
 }
 
+/* ... The rest of your DropdownMenu.css styles are correct and can remain ... */
 .dropdown-header {
   padding: 1rem;
   border-bottom: 1px solid #f0f0f0;
 }
-
 .dropdown-header-guest {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
-
-.dropdown-header-guest p {
-  margin: 0;
-  font-weight: 500;
-}
-
-.dropdown-header-guest .signup-link {
-  font-weight: bold;
-  color: #007bff;
-  text-decoration: none;
-}
-
+.dropdown-header-guest p { margin: 0; font-weight: 500; }
+.dropdown-header-guest .signup-link { font-weight: bold; color: #007bff; text-decoration: none; }
 .dropdown-item {
   display: flex;
   align-items: center;
@@ -44,13 +40,27 @@
   color: #333;
   transition: background-color 0.2s;
 }
-
-.dropdown-item:hover {
-  background-color: #f8f9fa;
-}
-
+.dropdown-item:hover { background-color: #f8f9fa; }
 .dropdown-item svg {
   margin-right: 1rem;
   font-size: 1.2rem;
   color: #007bff;
+}
+.messages-link { /* You should already have this */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+.notification-badge { /* You should already have this */
+    background-color: #dc3545;
+    color: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

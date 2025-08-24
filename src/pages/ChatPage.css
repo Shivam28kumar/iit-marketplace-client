@@ -16,3 +16,32 @@
   overflow-y: auto;
   background-color: #fcfcfc;
 }
+@media (max-width: 768px) {
+      .chat-container {
+        /* On mobile, the container just holds the sliding views */
+        position: relative;
+        overflow-x: hidden; /* Hide the view that's off-screen */
+      }
+      .sidebar-container, .message-container {
+        /* Both views now take up the full width and are positioned absolutely */
+        width: 100%;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        transition: transform 0.3s ease-in-out;
+      }
+      .sidebar-container {
+        transform: translateX(0); /* The sidebar is visible by default */
+      }
+      .message-container {
+        transform: translateX(100%); /* The message view starts off-screen to the right */
+      }
+
+      /* This class will be added by React to slide the views */
+      .chat-container.show-messages .sidebar-container {
+        transform: translateX(-100%); /* Slide sidebar out to the left */
+      }
+      .chat-container.show-messages .message-container {
+        transform: translateX(0); /* Slide message view in from the right */
+      }
+    }

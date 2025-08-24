@@ -57,4 +57,16 @@
     width: 100%;
     max-width: none;
   }
+}/* At the end of src/pages/HomePage.css */
+@media (max-width: 600px) {
+  /* --- THIS IS THE FLIPKART-STYLE FIX --- */
+  .product-grid {
+    /* We now create a 2-column grid on mobile screens */
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem; /* Reduce the gap slightly for smaller screens */
+  }
+
+  .homepage {
+    padding: 1rem;
+  }
 }

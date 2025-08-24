@@ -36,8 +36,16 @@
   color: #007bff;
 }
 /* Add this at the end of src/pages/CompanyDashboardPage.css */
-@media (max-width: 768px) {
-  .dashboard-actions {
-    grid-template-columns: 1fr; /* Stack the cards vertically */
+/* At the end of src/pages/HomePage.css */
+@media (max-width: 600px) {
+  /* --- THIS IS THE FLIPKART-STYLE FIX --- */
+  .product-grid {
+    /* We now create a 2-column grid on mobile screens */
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem; /* Reduce the gap slightly for smaller screens */
+  }
+
+  .homepage {
+    padding: 1rem;
   }
 }

@@ -1,21 +1,25 @@
 /* src/App.css */
 
 /* This sets up the main App container to be a flex column, which helps with footer placement */
+/* src/App.css */
+/* We remove the flexbox properties to fix the dropdown clipping bug */
+/* src/App.css */
+/* We remove the flexbox properties to fix the dropdown clipping bug */
 .App {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh; /* Ensures the app takes up at least the full height of the viewport */
+  background-color: #f1f3f6;
 }
 
 /* This is the main content area between the header and footer */
 main {
-  flex-grow: 1; /* Allows the main content to expand and push the footer down */
-  max-width: 1400px; /* Limits the width of the content on very wide screens */
+  /* This ensures the footer is pushed down on pages with little content */
+  min-height: calc(100vh - 250px); /* Adjust 250px based on total height of your header + footer */
+  max-width: 1400px;
   width: 100%;
   margin: 0 auto;
   padding: 1.5rem;
-  box-sizing: border-box; /* Ensures padding is included in the width calculation */
+  box-sizing: border-box;
 }
+/* This is the main content area between the header and footer */
 
 /* --- OPTIONAL BUT RECOMMENDED: A Subtle "Page" Effect --- */
 /* We can make content sections look like they are on a white "page" over the grey background */

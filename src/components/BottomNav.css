@@ -1,0 +1,60 @@
+/* src/components/BottomNav.css */
+.bottom-nav {
+  /* --- Positioning --- */
+  position: fixed; /* Sticks to the viewport */
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000; /* Stays on top of other content */
+  
+  /* --- Styling --- */
+  display: none; /* Hidden by default on desktop */
+  background-color: var(--white);
+  box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+  border-top: 1px solid var(--border-color);
+  height: 64px; /* A good, tappable height */
+}
+
+.bottom-nav-list {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  height: 100%;
+}
+
+.bottom-nav-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: var(--text-muted);
+  font-size: 0.75rem; /* 12px */
+  flex-grow: 1;
+  height: 100%;
+  gap: var(--space-1);
+  padding-bottom: var(--space-2); /* Safe area padding for iPhone notches */
+  box-sizing: border-box;
+}
+
+.bottom-nav-link svg {
+  font-size: 1.5rem; /* 24px */
+}
+
+/* Style for the active link */
+.bottom-nav-link.active {
+  color: var(--brand-600);
+}
+
+/* --- Media Query to show on mobile --- */
+@media (max-width: 768px) { /* md breakpoint */
+  .bottom-nav {
+    display: block; /* Show the component on mobile screens */
+  }
+  main {
+    padding-bottom: 80px; /* Add padding to the bottom of the main content to prevent overlap */
+  }
+}
