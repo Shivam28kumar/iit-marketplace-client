@@ -5,6 +5,7 @@ import axios from 'axios';
 import ProductCard from '../components/ProductCard';
 import Spinner from '../components/Spinner';
 import './HomePage.css'; // Reuse styles
+import api from '../api/axios';
 
 const UserProfilePage = () => {
   const { userId } = useParams(); // Get the userId from the URL
@@ -18,8 +19,8 @@ const UserProfilePage = () => {
       try {
         // Fetch user profile info and user's products in parallel
         const [userRes, productsRes] = await Promise.all([
-          axios.get(`http://localhost:5000/api/users/${userId}`),
-          axios.get(`http://localhost:5000/api/products/user/${userId}`)
+          api.get(`/users/${userId}`),
+          api.get(`/products/user/${userId}`)
         ]);
         
         setUser(userRes.data);

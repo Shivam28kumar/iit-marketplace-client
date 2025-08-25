@@ -1,27 +1,40 @@
 // src/pages/SearchResultsPage.js
 import React, { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom'; // This hook reads URL query params
-import axios from 'axios';
+import { useSearchParams } from 'react-router-dom';
+import api from '../api/axios'; // <-- CRITICAL: Use our central api instance
 import ProductCard from '../components/ProductCard';
 import Spinner from '../components/Spinner';
-import './HomePage.css'; // We can reuse the homepage styles
+import './HomePage.css';
 
 const SearchResultsPage = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchParams] = useSearchParams();
 
-  // Get the 'query' and 'category' from the URL, e.g., /search?query=bike&category=All
+  // Read all three possible parameters from the URL.
   const query = searchParams.get('query') || '';
   const category = searchParams.get('category') || 'All';
+  const college = searchParams.get('college') || 'All';
 
   useEffect(() => {
     const fetchProducts = async () => {
       setLoading(true);
+      
+      const params = {
+        search: query,
+        category: category,
+      };
+
+      // Only add the 'college' filter to our API call if the user has explicitly selected one.
+      if (college && college !== 'All') {
+        params.college = college;
+      }
+      
       try {
-        const { data } = await axios.get('http://localhost:5000/api/products', {
-          params: { search: query, category: category },
-        });
+        // --- THIS IS THE CRITICAL FIX ---
+        // We now correctly use our 'api' instance to make the request.
+        // This will automatically use the correct live URL in production.
+        const { data } = await api.get('/products', { params });
         setProducts(data);
       } catch (err) {
         console.error("Failed to fetch search results:", err);
@@ -31,12 +44,12 @@ const SearchResultsPage = () => {
     };
 
     fetchProducts();
-  }, [query, category]); // Re-run this effect whenever the query or category in the URL changes
+  }, [query, category, college]);
 
   return (
     <div className="homepage">
       <h1 className="homepage-title">
-        {query ? `Results for "${query}"` : 'All Products'}
+        {query ? `Results for "${query}"` : `Browsing ${category}`}
       </h1>
       
       {loading ? (
@@ -48,7 +61,7 @@ const SearchResultsPage = () => {
               <ProductCard key={product._id} product={product} />
             ))
           ) : (
-            <p className="no-products-message">No products found matching your search.</p>
+            <p className="no-products-message">No products found matching your criteria.</p>
           )}
         </div>
       )}
