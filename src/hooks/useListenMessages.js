@@ -7,34 +7,38 @@ import notificationSound from '../assets/sounds/notification.mp3';
 
 const useListenMessages = () => {
   const socket = useContext(SocketContext);
-  
-  // --- THIS IS THE FIX ---
-  // We no longer need to get the 'messages' variable here. We only need the setter function.
-  const { setMessages, selectedConversation } = useConversation();
-  
+  const { messages, setMessages, selectedConversation } = useConversation();
   const { fetchUnreadCount } = useAuthContext();
 
   useEffect(() => {
     if (socket) {
       const messageListener = (newMessage) => {
-        // Play sound and refresh the unread count in the navbar
-        const sound = new Audio(notificationSound);
-        sound.play();
-        fetchUnreadCount();
+        try {
+          const sound = new Audio(notificationSound);
+          sound.play().catch(e => console.log("Audio play blocked by browser"));
+        } catch (e) {
+            console.log("Could not play sound", e);
+        }
+        
+        fetchUnreadCount(); // Always update the badge count
 
-        // Use the functional update form to avoid stale state.
-        // This is a robust way to update the state based on its previous value.
+        // --- THIS IS THE CRITICAL FIX for REAL-TIME ---
+        // We use the functional update form. This always works.
+        // It tells React to get the most recent 'messages' array and add the new one.
         setMessages((prevMessages) => [...prevMessages, newMessage]);
       };
 
       socket.on("newMessage", messageListener);
 
-      // Cleanup function to remove the event listener when the component unmounts.
       return () => {
         socket.off("newMessage", messageListener);
       };
     }
-  }, [socket, setMessages, selectedConversation, fetchUnreadCount]); // Dependencies for the effect
+    // We only want to set up and tear down this listener when the socket connection changes.
+  }, [socket, setMessages, fetchUnreadCount]);
+
+  // We also want to filter which messages are displayed inside the MessageContainer,
+  // but the listener itself should always add messages to the main array.
 };
 
-export default useListenMessages;
+export default useListenMessages; 

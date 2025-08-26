@@ -29,6 +29,7 @@ import ChatPage from './pages/ChatPage';
 import AdminDashboardPage from './pages/AdminDashboardPage';
 import CompanyDashboardPage from './pages/CompanyDashboardPage';
 import CompanyListingsPage from './pages/CompanyListingsPage';
+import CategoriesPage from './pages/CategoriesPage'; 
 
 import './App.css';
 
@@ -49,6 +50,7 @@ function App() {
             <Route path="/search" element={<SearchResultsPage />} />
             <Route path="/profile/:userId" element={<UserProfilePage />} />
             <Route path="/product/:id" element={<ProductDetailPage />} />
+            <Route path="/categories" element={<CategoriesPage />} /> 
 
             {/* --- THIS IS THE CRITICAL FIX --- */}
             {/* --- Protected Routes (user must be logged in) --- */}

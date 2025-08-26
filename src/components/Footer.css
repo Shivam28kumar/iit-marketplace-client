@@ -1,49 +1,262 @@
-/* src/components/Footer.css */
-.footer {
-  background-color: #232f3e; /* Match the header color */
-  color: #ddd;
-  padding: 3rem 2rem;
-  margin-top: 3rem;
-  font-size: 0.9rem;
+:root {
+  --footer-bg: #232f3e;
+  --footer-text: #ccc;
+  --footer-text-light: #999;
+  --footer-heading: #fff;
+  --footer-link-hover: #ff9900; /* Amazon Orange for brand consistency */
+  --footer-border: #3a4553;
+  --font-body: "Segoe UI", Arial, sans-serif;
 }
+
+.site-footer {
+  background-color: var(--footer-bg);
+  color: var(--footer-text);
+  font-family: var(--font-body);
+  padding: 40px 20px;
+  font-size: 14px;
+}
+
 .footer-container {
   max-width: 1200px;
   margin: 0 auto;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 2rem;
 }
+
+/* 2. Footer Sections (Top, Main, Bottom)
+   -------------------------------------------------------------------------- */
+.footer-top, .footer-bottom {
+  border-bottom: 1px solid var(--footer-border);
+  padding-bottom: 24px;
+  margin-bottom: 24px;
+}
+
+.footer-bottom {
+  border-bottom: none;
+  padding-bottom: 0;
+  margin-bottom: 0;
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid var(--footer-border);
+}
+
+/* 3. Link Columns & Accordion (Mobile First)
+   -------------------------------------------------------------------------- */
 .footer-column h3 {
-  color: white;
-  font-size: 1.1rem;
-  margin-bottom: 1rem;
+  font-size: 16px;
+  margin: 0 0 15px 0;
+  color: var(--footer-heading);
   text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
+
+.footer-column .footer-column-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent; /* Remove tap highlight on mobile */
+}
+
 .footer-column ul {
   list-style: none;
   padding: 0;
   margin: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease-in-out;
 }
+
+.footer-column ul.active {
+  max-height: 250px; /* Adjust as needed */
+}
+
 .footer-column li {
-  margin-bottom: 0.75rem;
+  margin: 10px 0;
 }
+
 .footer-column a {
-  color: #ddd;
+  color: var(--footer-text);
   text-decoration: none;
-  transition: color 0.2s;
+  transition: color 0.3s ease;
 }
+
 .footer-column a:hover {
-  color: #ff9900; /* Amazon orange for hover */
+  color: var(--footer-link-hover);
+  text-decoration: underline;
 }
+
+/* Accordion Icon (+/-) */
+.accordion-icon {
+  position: relative;
+  width: 12px;
+  height: 12px;
+}
+.accordion-icon::before,
+.accordion-icon::after {
+  content: '';
+  position: absolute;
+  background-color: var(--footer-text);
+  transition: transform 0.3s ease;
+}
+.accordion-icon::before {
+  top: 5px; left: 0;
+  width: 12px; height: 2px;
+}
+.accordion-icon::after {
+  top: 0; left: 5px;
+  width: 2px; height: 12px;
+}
+.footer-column-title:not([class*="active"]) + ul.active + .accordion-icon::after {
+  transform: rotate(90deg);
+}
+
+/* Correctly toggle the icon based on the UL's active class */
+.footer-column h3.footer-column-title + ul.active ~ .accordion-icon::after,
+.footer-column h3.footer-column-title[aria-expanded="true"] + .accordion-icon::after {
+    transform: rotate(90deg);
+}
+/* This is a bit tricky with sibling selectors, let's simplify in the component if needed.
+   A simpler visual cue might be better. Let's adjust the icon rotation logic. */
+.footer-column ul.active + .accordion-icon::after { /* This selector is incorrect. It needs to be tied to the click state. */ }
+/* The JS logic already handles the `ul` class. We need to tie the icon to the h3 state. */
+/* A small JS tweak to add an 'active' class to the h3 would be ideal. Assuming that, it would be: */
+.footer-column-title.active .accordion-icon::after {
+    transform: rotate(90deg);
+}
+.footer-column-title .accordion-icon::after {
+  transform: rotate(0deg); /* Reset */
+}
+
+
+/* 4. Newsletter & Social
+   -------------------------------------------------------------------------- */
+.footer-column-newsletter p {
+  margin: 0 0 15px 0;
+  color: var(--footer-text-light);
+}
+.newsletter-form {
+  display: flex;
+  max-width: 400px;
+}
+.newsletter-form input {
+  flex-grow: 1;
+  border: 1px solid var(--footer-border);
+  background: #3a4553;
+  padding: 10px 15px;
+  color: #fff;
+  border-radius: 4px 0 0 4px;
+  outline: none;
+}
+.newsletter-form input::placeholder {
+  color: var(--footer-text-light);
+}
+.newsletter-form button {
+  border: none;
+  background: var(--footer-link-hover);
+  color: #111;
+  padding: 0 15px;
+  cursor: pointer;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0 4px 4px 0;
+  transition: background-color 0.3s ease;
+}
+.newsletter-form button:hover {
+  background-color: #ffb84d;
+}
+
 .footer-social-icons {
   display: flex;
-  gap: 1rem;
-  font-size: 1.5rem;
+  gap: 20px;
+  font-size: 22px;
 }
-.footer-bottom {
-  text-align: center;
-  margin-top: 3rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid #3a4553;
-  color: #999;
+.footer-social-icons a {
+  color: var(--footer-text);
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+.footer-social-icons a:hover {
+  color: var(--footer-link-hover);
+  transform: translateY(-3px);
+}
+
+/* 5. Bottom Bar (App Links, Payments, Copyright)
+   -------------------------------------------------------------------------- */
+.app-store-links {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+.app-store-links img {
+    height: 40px;
+}
+
+.payment-icons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-size: 32px;
+    color: var(--footer-text-light);
+    margin-top: 20px;
+}
+.footer-bottom-left p {
+    color: var(--footer-text-light);
+    font-size: 13px;
+    margin: 0;
+}
+
+
+/* ==========================================================================
+   Responsive - Tablet & Desktop
+   ========================================================================== */
+@media (min-width: 768px) {
+  /* Restore block layout for links */
+  .footer-column ul {
+    max-height: none;
+    overflow: visible;
+  }
+  .footer-column .footer-column-title {
+    cursor: default;
+  }
+  .accordion-icon {
+    display: none;
+  }
+
+  /* Layout for larger screens */
+  .footer-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 40px;
+  }
+  .footer-column-newsletter {
+      flex: 1.5;
+  }
+  .footer-column-social {
+      flex: 1;
+  }
+
+  .footer-main {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 30px;
+  }
+  
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .payment-icons {
+      margin-top: 0;
+      justify-content: flex-end;
+  }
+  .app-store-links {
+    margin-top: 0;
+    margin-left: 20px; /* Add some space from copyright */
+  }
+  .footer-bottom-left {
+      display: flex;
+      align-items: center;
+  }
 }

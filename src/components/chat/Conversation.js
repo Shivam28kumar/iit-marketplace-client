@@ -1,22 +1,20 @@
 // src/components/chat/Conversation.js
 import React from 'react';
-import './Conversation.css';
-import { useAuthContext } from '../../context/AuthContext'; // We need this to check who sent the last message
+import './Conversation.css'; // We will add styles for the new badge
+import { useAuthContext } from '../../context/AuthContext';
 
 const Conversation = ({ conversation, isSelected, onClick }) => {
   const { user: authUser } = useAuthContext();
   const otherParticipant = conversation.participants[0];
 
-  // --- NEW LOGIC for Last Message ---
+  // Determine what the last message preview should show
   let lastMessageText = "No messages yet...";
   if (conversation.lastMessage) {
-    // Check if the logged-in user was the sender of the last message
     const fromMe = conversation.lastMessage.senderId === authUser.id;
-    // Prepend "You: " if you sent the last message
+    // Prepend "You: " if the logged-in user sent the last message
     lastMessageText = `${fromMe ? "You: " : ""}${conversation.lastMessage.message}`;
   }
-
-  // Truncate the message if it's too long to fit in the sidebar
+  // Truncate the message if it's too long
   if (lastMessageText.length > 25) {
     lastMessageText = lastMessageText.substring(0, 25) + "...";
   }
@@ -27,12 +25,24 @@ const Conversation = ({ conversation, isSelected, onClick }) => {
       onClick={onClick}
     >
       <img src={conversation.product?.imageUrl} alt="product" className="conversation-image" />
+      
       <div className="conversation-info">
         <p className="conversation-name">{otherParticipant?.fullName || 'Chat'}</p>
-        {/* --- THIS IS THE FIX --- */}
-        {/* We now display the formatted last message text */}
-        <p className="last-message">{lastMessageText}</p>
+        {/*
+          We can add a class to the last message to make it bold if it's unread.
+          This is a common UX pattern.
+        */}
+        <p className={`last-message ${conversation.unreadCount > 0 ? 'unread' : ''}`}>
+          {lastMessageText}
+        </p>
       </div>
+
+      {/* --- THIS IS THE FIX --- */}
+      {/* We conditionally render the unread count badge. */}
+      {/* It will only appear if the count is greater than 0. */}
+      {conversation.unreadCount > 0 && (
+        <span className="unread-badge">{conversation.unreadCount}</span>
+      )}
     </div>
   );
 };

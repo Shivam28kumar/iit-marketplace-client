@@ -1,45 +1,58 @@
 // src/pages/HomePage.js
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../api/axios';
 import { useAuthContext } from '../context/AuthContext';
-import { Carousel } from 'react-responsive-carousel';
-import "react-responsive-carousel/lib/styles/carousel.min.css";
 
+// Import all the UI components for the homepage
 import ProductCard from '../components/ProductCard';
 import Spinner from '../components/Spinner';
 import CategoryShowcase from '../components/CategoryShowcase';
-import PromoCard from '../components/PromoCard'; // <-- Import the new promo card
+import PromoCard from '../components/PromoCard'; // <-- STEP 1: Import the PromoCard
+
+// Import Carousel Components
+import { Carousel } from 'react-responsive-carousel';
+import "react-responsive-carousel/lib/styles/carousel.min.css";
+
 import './HomePage.css';
 
 const HomePage = () => {
+  // --- STATE AND CONTEXT ---
   const [products, setProducts] = useState([]);
   const [banners, setBanners] = useState([]);
   const [loading, setLoading] = useState(true);
   const { user } = useAuthContext();
 
-  // The data fetching logic is correct and remains unchanged.
+  // --- DATA FETCHING ---
+  // This useEffect fetches all the data needed for the homepage.
   useEffect(() => {
     const fetchData = async () => {
-        setLoading(true);
-        const params = {};
-        if (user && user.college) params.college = user.college.id;
-        try {
-            const [productsRes, bannersRes] = await Promise.all([
-                api.get('/products', { params }),
-                api.get('/banners')
-            ]);
-            setProducts(productsRes.data);
-            setBanners(bannersRes.data);
-        } catch (err) { console.error("HomePage fetch error:", err); }
-        finally { setLoading(false); }
+      setLoading(true);
+      const params = {};
+      if (user && user.college) {
+        params.college = user.college.id;
+      }
+      try {
+        const [productsRes, bannersRes] = await Promise.all([
+            api.get('/products', { params }),
+            api.get('/banners')
+        ]);
+        setProducts(productsRes.data);
+        setBanners(bannersRes.data);
+      } catch (err) {
+        console.error("HomePage fetch error:", err);
+      } finally {
+        setLoading(false);
+      }
     };
     fetchData();
   }, [user]);
 
+  // --- RENDER LOGIC ---
   return (
     <div className="homepage-container">
-      {/* --- Section 1: Your Admin-Controlled Banner Carousel (UNCHANGED) --- */}
+      
+      {/* --- Section 1: Admin-Controlled Banner Carousel --- */}
       {banners.length > 0 && (
         <div className="carousel-container">
           <Carousel autoPlay infiniteLoop showThumbs={false} showStatus={false} interval={5000}>
@@ -52,13 +65,14 @@ const HomePage = () => {
         </div>
       )}
       
-      {/* --- Section 2: Category Showcase (UNCHANGED) --- */}
+      {/* --- Section 2: Shop by Category Showcase --- */}
       <CategoryShowcase />
       
-      {/* --- Section 3: The New Static Promotional Card (ADDITIVE) --- */}
+      {/* --- Section 3: Static Promotional Card --- */}
+      {/* THIS IS THE FIX: The PromoCard component is now rendered in its correct place. */}
       <PromoCard />
 
-      {/* --- Section 4: The Main Product Grid (UNCHANGED) --- */}
+      {/* --- Section 4: Main Product Grid --- */}
       <section className="product-grid-section">
         <h2 className="section-title">
           {user && user.college ? `Recommended for ${user.college.name}` : "Recently Added Items"}
@@ -74,4 +88,5 @@ const HomePage = () => {
     </div>
   );
 };
+
 export default HomePage;

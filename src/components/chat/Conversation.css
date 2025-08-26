@@ -11,11 +11,25 @@
 .conversation:hover, .conversation.selected {
   background-color: #eaf2ff;
 }
+
+.conversation-image {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 0.75rem;
+}
+
 .conversation-info {
-  margin-left: 0.75rem;
+  /* This will make the info take up all available space, pushing the badge to the right */
+  flex-grow: 1;
+  overflow: hidden; /* Prevents long text from breaking the layout */
 }
 .conversation-info p {
   margin: 0;
+  white-space: nowrap; /* Prevents text from wrapping to a new line */
+  overflow: hidden;
+  text-overflow: ellipsis; /* Adds "..." if the text is too long */
 }
 .conversation-name {
   font-weight: 500;
@@ -24,10 +38,26 @@
   font-size: 0.9rem;
   color: #666;
 }
-/* Add this to src/components/chat/Conversation.css */
-.conversation-image {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    object-fit: cover;
+
+/* --- NEW STYLES --- */
+/* Style for the last message text when it is unread */
+.last-message.unread {
+    color: #0b0b0f; /* Make the text black and bold */
+    font-weight: 700;
+}
+
+/* Style for the unread count badge */
+.unread-badge {
+  background-color: #25d366; /* WhatsApp Green */
+  color: white;
+  border-radius: 50%;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 4px;
+  font-size: 0.75rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 0.5rem; /* Space from the text */
 }

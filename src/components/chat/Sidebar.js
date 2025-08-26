@@ -1,19 +1,18 @@
 // src/components/chat/Sidebar.js
 import React, { useState, useEffect } from 'react';
 import Conversation from './Conversation';
-import api from '../../api/axios'; // <-- IMPORT OUR NEW API INSTANCE
+import api from '../../api/axios';
 import toast from 'react-hot-toast';
 import { useConversation } from '../../context/ConversationContext';
 
 const Sidebar = () => {
   const [loading, setLoading] = useState(true);
-  const [conversations, setConversations] = useState([]);
-  const { selectedConversation, setSelectedConversation } = useConversation();
+  // Get conversations and setters from the global context
+  const { conversations, setConversations, selectedConversation, setSelectedConversation } = useConversation();
 
   useEffect(() => {
     const getConversations = async () => {
       try {
-        // Now using our 'api' instance. The base URL and auth header are handled automatically.
         const { data } = await api.get("/chat/conversations");
         setConversations(data);
       } catch (error) {
@@ -23,10 +22,10 @@ const Sidebar = () => {
       }
     };
     getConversations();
-  }, []);
+  }, [setConversations]);
 
   return (
-    <div className="sidebar-container"> {/* Use a class for styling */}
+    <div className="sidebar-container">
       {loading && <p style={{textAlign: 'center'}}>Loading Chats...</p>}
       {!loading && conversations.map((convo) => (
         <Conversation
@@ -36,9 +35,7 @@ const Sidebar = () => {
           onClick={() => setSelectedConversation(convo)}
         />
       ))}
-       {!loading && conversations.length === 0 && (
-         <p style={{textAlign: 'center', padding: '1rem'}}>No conversations yet.</p>
-       )}
+      {/* ... no conversations message ... */}
     </div>
   );
 };

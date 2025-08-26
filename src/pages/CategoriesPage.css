@@ -1,0 +1,114 @@
+/* src/pages/CategoriesPage.css */
+
+/* 1. Variables - For easy theme management */
+:root {
+  --page-bg: #f8f9fa;
+  --card-bg: #ffffff;
+  --primary-text: #212529;
+  --secondary-text: #6c757d;
+  --accent-color: #007bff;
+  --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  --card-shadow-hover: 0 7px 14px rgba(0, 0, 0, 0.07);
+  --card-radius: 12px;
+  --transition-speed: 0.2s;
+}
+
+/* 2. Page Layout */
+.categories-page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem 1rem; /* Added more vertical padding */
+  background-color: var(--page-bg);
+  min-height: 100vh;
+}
+
+/* 3. Header Styling */
+.categories-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.categories-header h1 {
+  font-size: 2.25rem; /* Larger, more impactful title */
+  font-weight: 700;
+  color: var(--primary-text);
+  margin-bottom: 0.5rem;
+}
+
+.categories-header p {
+  font-size: 1.1rem;
+  color: var(--secondary-text);
+  max-width: 500px;
+  margin: 0 auto; /* Center the paragraph if it wraps */
+}
+
+/* 4. Grid Layout (Mobile First) */
+.category-grid {
+  display: grid;
+  /* Start with 2 columns on mobile, it looks more balanced than one */
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+}
+
+/* 5. The Category Card - This is the core visual element */
+.category-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem; /* Space between icon and text */
+  padding: 1.5rem;
+  background-color: var(--card-bg);
+  border-radius: var(--card-radius);
+  box-shadow: var(--card-shadow);
+  text-decoration: none; /* Remove underline from link */
+  transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+}
+
+/* 6. Card Icon and Name Styling */
+.category-card__icon {
+  font-size: 2.5rem; /* Make the icon a prominent feature */
+  color: var(--accent-color);
+}
+
+.category-card__name {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--primary-text);
+  margin: 0; /* Reset default h3 margin */
+  text-align: center;
+}
+
+/* 7. Interactive States for Hover & Keyboard Focus */
+.category-card:hover,
+.category-card:focus-visible {
+  transform: translateY(-5px); /* Subtle lift effect */
+  box-shadow: var(--card-shadow-hover);
+  outline: none; /* Remove default blue outline for focus, as the shadow provides feedback */
+}
+
+/* Add a custom focus ring for better accessibility if desired */
+.category-card:focus-visible {
+    box-shadow: var(--card-shadow-hover), 0 0 0 2px var(--accent-color);
+}
+
+
+/* 8. Responsive Adjustments for Larger Screens */
+@media (min-width: 576px) {
+  /* For larger phones and small tablets, go to 3 columns */
+  .category-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 992px) {
+  /* For desktops, use the original auto-fit logic which works great here */
+  .category-grid {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .categories-header h1 {
+    font-size: 2.75rem;
+  }
+}
