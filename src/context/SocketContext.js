@@ -10,51 +10,66 @@ export const SocketContext = createContext();
 export const SocketProvider = ({ children }) => {
   const [socket, setSocket] = useState(null);
   const { user, fetchUnreadCount } = useAuthContext();
-  const { setMessages, selectedConversation, conversations, setConversations } = useConversation();
+  const { setMessages, selectedConversation, setConversations } = useConversation();
 
-  // Effect to connect/disconnect the socket
+  // This useEffect hook handles connecting and disconnecting the socket.
   useEffect(() => {
     if (user) {
-      const newSocket = io('http://localhost:5000', { query: { userId: user.id } });
+      // --- THIS IS THE CRITICAL FIX ---
+      // We define the backend URL based on the environment.
+      // 'process.env.NODE_ENV' is 'development' on your local machine and 'production' on Vercel.
+      // 'process.env.REACT_APP_API_URL' is the environment variable we set in Vercel.
+      const SOCKET_URL = process.env.NODE_ENV === 'production'
+        ? process.env.REACT_APP_API_URL
+        : 'http://localhost:5000';
+
+      // We now connect to the correct URL.
+      const newSocket = io(SOCKET_URL, {
+        query: {
+          userId: user.id,
+        },
+      });
+
       setSocket(newSocket);
+
+      // Cleanup function to close the socket when the user logs out.
       return () => newSocket.close();
     } else {
-      if (socket) { socket.close(); setSocket(null); }
+      if (socket) {
+        socket.close();
+        setSocket(null);
+      }
     }
   }, [user]);
 
-  // Global Listener Effect for real-time events
+  // This useEffect handles all the real-time event listeners.
   useEffect(() => {
     if (socket) {
-      // --- Listens for NEW MESSAGES ---
       const messageListener = ({ newMessage, conversationId }) => {
         const sound = new Audio(notificationSound);
-        sound.play().catch(e => console.log("Audio play blocked"));
-        fetchUnreadCount(); // Update the main badge
+        sound.play().catch(e => console.log("Audio play blocked by browser"));
+        fetchUnreadCount();
 
-        // If the user is looking at the correct conversation, add the message to the view
         if (selectedConversation?._id === conversationId) {
           setMessages((prev) => [...prev, newMessage]);
         }
         
-        // Also, we should update the "last message" in the sidebar in real-time
+        // This logic updates the "last message" preview in the sidebar in real-time.
         setConversations(prevConvos => {
-            const updatedConvos = prevConvos.map(convo => {
-                if(convo._id === conversationId) {
-                    return { ...convo, lastMessage: newMessage };
-                }
-                return convo;
-            });
-            // Bring the updated conversation to the top
-            return updatedConvos.sort((a,b) => new Date(b.updatedAt) - new Date(a.updatedAt));
+            const convoIndex = prevConvos.findIndex(c => c._id === conversationId);
+            if (convoIndex !== -1) {
+                const updatedConvo = { ...prevConvos[convoIndex], lastMessage: newMessage, updatedAt: newMessage.createdAt };
+                const newConvos = [...prevConvos];
+                newConvos.splice(convoIndex, 1); // Remove the old one
+                newConvos.unshift(updatedConvo); // Add the updated one to the top
+                return newConvos;
+            }
+            return prevConvos; // If conversation not in list, do nothing (it will appear on next fetch)
         });
       };
 
-      // --- Listens for when ANOTHER user reads OUR messages ---
       const conversationsUpdatedListener = () => {
-        // A simple way to update the sidebar with new read statuses is to just refetch the list
-        // This is a placeholder for a more advanced implementation
-        console.log("Conversations updated event received.");
+        // This is a placeholder for potential future features like read receipts.
       };
 
       socket.on("newMessage", messageListener);
@@ -65,7 +80,7 @@ export const SocketProvider = ({ children }) => {
         socket.off("conversationsUpdated", conversationsUpdatedListener);
       };
     }
-  }, [socket, user, fetchUnreadCount, selectedConversation, setMessages, setConversations]);
+  }, [socket, fetchUnreadCount, selectedConversation, setMessages, setConversations]);
 
   return (
     <SocketContext.Provider value={socket}>
