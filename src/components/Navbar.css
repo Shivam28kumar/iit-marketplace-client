@@ -8,7 +8,7 @@
   color: var(--text-light);
   position: sticky;
   top: 0;
-  z-index: 1000;
+  z-index: 1010; /* High z-index to stay above everything */
 }
 
 /* --- Left Section: Brand --- */
@@ -19,7 +19,7 @@
   text-decoration: none;
   text-transform: uppercase;
   letter-spacing: 1px;
-  flex-shrink: 0; /* Prevents the logo from shrinking */
+  flex-shrink: 0;
 }
 .navbar-brand:hover {
   color: var(--brand-600);
@@ -33,11 +33,11 @@
   display: flex;
   align-items: center;
   gap: var(--space-4);
-  flex-shrink: 0; /* Prevents the buttons from shrinking */
+  flex-shrink: 0;
 }
 
-.sell-button-header { /* This is the "Sell an Item" button */
-  white-space: nowrap; /* Prevents text from wrapping */
+.sell-button-header { 
+  white-space: nowrap; 
 }
 
 .navbar-profile-container {
@@ -63,26 +63,39 @@
   background-color: rgba(255, 255, 255, 0.1);
 }
 
-/* --- MOBILE RESPONSIVENESS --- */
+/* --- MOBILE RESPONSIVENESS (FIXED) --- */
 @media (max-width: 992px) {
   .navbar {
-    flex-wrap: wrap; /* Allow items to wrap to a new line */
-    justify-content: space-between; /* Space out brand and actions */
-    gap: var(--space-4);
-    padding: var(--space-3) var(--space-4);
+    flex-direction: column; /* Stack items vertically */
+    align-items: center;    /* Center everything horizontally */
+    justify-content: center;
+    gap: 0.5rem;            /* Reduce gap between stacked items */
+    padding: 1rem;
   }
-  .header-search-form {
-    /* Make the search bar take up the full width on its own line */
+  
+  .navbar-brand {
+    order: 1;
+    text-align: center;
     width: 100%;
-    order: 3; /* Force it to be the last item */
-    margin-top: var(--space-2);
+    margin-bottom: 0.25rem;
   }
-  .navbar-brand { order: 1; }
-  .navbar-actions { order: 2; }
+  
+  .navbar-actions {
+    order: 2;
+    width: 100%;
+    justify-content: center; /* Center the buttons */
+    margin-bottom: 0.5rem;
+  }
+
+  .header-search-form {
+    width: 100%;
+    order: 3;
+    margin-top: 0;
+    max-width: none;
+  }
 }
 
 @media (max-width: 768px) {
-  /* On very small screens, hide the "Sell an Item" button from the header */
   .sell-button-header {
     display: none;
   }

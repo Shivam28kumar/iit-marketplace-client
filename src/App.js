@@ -30,6 +30,12 @@ import AdminDashboardPage from './pages/AdminDashboardPage';
 import CompanyDashboardPage from './pages/CompanyDashboardPage';
 import CompanyListingsPage from './pages/CompanyListingsPage';
 import CategoriesPage from './pages/CategoriesPage'; 
+import ShopListPage from './pages/ShopListPage';
+import ShopMenuPage from './pages/ShopMenuPage';
+import CheckoutPage from './pages/CheckoutPage';
+import ShopRoute from './components/ShopRoute';
+import ShopDashboardPage from './pages/ShopDashboardPage';
+import UserOrdersPage from './pages/UserOrdersPage';
 
 import './App.css';
 
@@ -67,10 +73,20 @@ function App() {
               <Route path="/company/dashboard" element={<CompanyDashboardPage />} />
               <Route path="/company/listings" element={<CompanyListingsPage />} />
             </Route>
+            {/* --- NEW ROUTE FOR 10-MIN DELIVERY --- */}
+            <Route path="/outlets" element={<ShopListPage />} />
+            <Route path="/shops/:id" element={<ShopMenuPage />} />
+            <Route path="/checkout" element={<CheckoutPage />} />
+            <Route path="/my-orders" element={<UserOrdersPage />} />
+            {/* --- Shop-Only Routes --- */}
+            <Route element={<ShopRoute />}>
+              <Route path="/shop/dashboard" element={<ShopDashboardPage />} />
+            </Route>
 
             {/* --- Admin-Only Routes --- */}
             <Route element={<AdminRoute />}>
               <Route path="/admin" element={<AdminDashboardPage />} />
+              
             </Route>
           </Routes>
         </main>

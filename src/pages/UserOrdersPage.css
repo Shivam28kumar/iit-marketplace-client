@@ -1,0 +1,72 @@
+/* src/pages/UserOrdersPage.css */
+.user-orders-page {
+  padding-bottom: 2rem;
+}
+
+.user-orders-page h1 {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: #333;
+}
+
+.user-order-card {
+  background: white;
+  border: 1px solid #eee;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  transition: all 0.3s ease;
+}
+
+/* Status colors */
+.user-order-card.pending { border-left: 5px solid #ff9900; }
+.user-order-card.preparing { border-left: 5px solid #3399ff; }
+.user-order-card.ready { border-left: 5px solid #26a541; background-color: #f0fff4; }
+.user-order-card.completed { border-left: 5px solid #666; opacity: 0.8; }
+.user-order-card.cancelled { border-left: 5px solid #dc3545; background-color: #fff5f5; }
+
+.order-top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  border-bottom: 1px dashed #eee;
+  padding-bottom: 0.5rem;
+}
+
+.shop-name {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.order-date {
+  font-size: 0.85rem;
+  color: #888;
+}
+
+.order-status-badge {
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  background-color: #eee;
+}
+
+.pending .order-status-badge { background-color: #fff3cd; color: #b87900; }
+.preparing .order-status-badge { background-color: #e0f2fe; color: #007bff; }
+.ready .order-status-badge { background-color: #d1fae5; color: #047857; animation: bounce 1s infinite; }
+
+.order-summary {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+  font-weight: bold;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-3px); }
+}

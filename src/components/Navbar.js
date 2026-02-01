@@ -3,38 +3,56 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuthContext } from '../context/AuthContext';
 
-// Import all the components this Navbar uses
+// Import components
 import DropdownMenu from './DropdownMenu';
 import SearchBar from './SearchBar';
 
-// Import icons and styles
-import { FaUserCircle } from 'react-icons/fa';
+// Import icons (Fixed Fabolt -> FaBolt)
+import { FaUserCircle, FaBolt } from 'react-icons/fa';
 import './Navbar.css';
 
 // --- MAIN NAVBAR COMPONENT ---
-// This component's main job is to structure the header.
 const Navbar = () => {
-  // We get the user from the global context to decide which user actions to show.
   const { user } = useAuthContext();
 
   return (
     <nav className="navbar">
-      {/* Left section: The clickable brand logo */}
+      {/* Left section: Brand */}
       <Link to="/" className="navbar-brand">IIT Marketplace</Link>
       
-      {/* Center section: The self-contained SearchBar component */}
+      {/* Center section: Search */}
       <SearchBar />
 
-      {/* Right section: All user-related actions */}
+      {/* Right section: Actions */}
       <div className="navbar-actions">
-        {/*
-          THE FIX: We apply the global 'btn' and 'btn-primary' classes for consistent styling.
-          We also add 'sell-button-header' so we can specifically hide it on mobile.
-        */}
+        
+        {/* --- NEW: 10 Min Delivery Button --- */}
+        <Link 
+          to="/outlets" 
+          className="btn" 
+          style={{
+            backgroundColor: '#ff4757', // Distinct red color for urgency
+            color: 'white',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px',
+            fontWeight: 'bold',
+            whiteSpace: 'nowrap',
+            marginRight: '0.5rem' // Little spacing from the next button
+          }}
+        >
+          <FaBolt /> 10 Mins
+        </Link>
+
+        {/* Sell Button */}
         <Link to="/sell" className="btn btn-primary sell-button-header">Sell an Item</Link>
         
-        {/* We conditionally render either the Login button for guests or the DropdownTrigger for logged-in users */}
-        {user ? <DropdownTrigger /> : <Link to="/login" className="login-button-header">Login</Link>}
+        {/* Login / User Dropdown */}
+        {user ? (
+            <DropdownTrigger />
+        ) : (
+            <Link to="/login" className="login-button-header">Login</Link>
+        )}
       </div>
     </nav>
   );
@@ -42,8 +60,6 @@ const Navbar = () => {
 
 
 // --- DROPDOWN TRIGGER HELPER COMPONENT ---
-// This sub-component manages all the state and logic for the user dropdown menu.
-// This logic is already perfect and requires no changes.
 const DropdownTrigger = () => {
     const [isDropdownVisible, setDropdownVisible] = useState(false);
     const { logout } = useAuthContext();

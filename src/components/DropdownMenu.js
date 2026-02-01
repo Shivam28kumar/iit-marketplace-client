@@ -49,6 +49,11 @@ const DropdownMenu = ({ onLogout, closeMenu }) => {
     dashboardText = "Company Dashboard";
     DashboardIcon = FaTachometerAlt;
   }
+  else if (user.role === 'shop') {
+   dashboardLink = "/shop/dashboard";
+   dashboardText = "Shop Dashboard";
+   DashboardIcon = FaTachometerAlt;
+}
 
   return (
     <div className="dropdown-menu">
@@ -73,6 +78,10 @@ const DropdownMenu = ({ onLogout, closeMenu }) => {
           </Link>
           <Link to="#" className="dropdown-item" onClick={closeMenu}>
             <FaHeart /> Orders
+          </Link>
+          {/* --- THIS IS THE FIX --- */}
+          <Link to="/my-orders" className="dropdown-item" onClick={closeMenu}>
+            <FaHeart /> My Orders
           </Link>
           <Link to="#" className="dropdown-item" onClick={closeMenu}>
             <FaPlusSquare /> Plus Zone

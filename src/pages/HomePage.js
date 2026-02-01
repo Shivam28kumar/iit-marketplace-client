@@ -1,30 +1,28 @@
 // src/pages/HomePage.js
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../api/axios';
 import { useAuthContext } from '../context/AuthContext';
 
-// Import all the UI components for the homepage
+// Import UI Components
 import ProductCard from '../components/ProductCard';
 import Spinner from '../components/Spinner';
 import CategoryShowcase from '../components/CategoryShowcase';
-import PromoCard from '../components/PromoCard'; // <-- STEP 1: Import the PromoCard
+import PromoCard from '../components/PromoCard';
+import OptimizedImage from '../components/OptimizedImage'; // Ensure this is imported
 
-// Import Carousel Components
+// Import Carousel
 import { Carousel } from 'react-responsive-carousel';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 
 import './HomePage.css';
 
 const HomePage = () => {
-  // --- STATE AND CONTEXT ---
   const [products, setProducts] = useState([]);
   const [banners, setBanners] = useState([]);
   const [loading, setLoading] = useState(true);
   const { user } = useAuthContext();
 
-  // --- DATA FETCHING ---
-  // This useEffect fetches all the data needed for the homepage.
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
@@ -48,43 +46,55 @@ const HomePage = () => {
     fetchData();
   }, [user]);
 
-  // --- RENDER LOGIC ---
   return (
-    <div className="homepage-container">
+    <div className="homepage">
       
-      {/* --- Section 1: Admin-Controlled Banner Carousel --- */}
+      {/* --- Section 1: Responsive Banner Carousel --- */}
       {banners.length > 0 && (
-        <div className="carousel-container">
-          <Carousel autoPlay infiniteLoop showThumbs={false} showStatus={false} interval={5000}>
-            {banners.map(banner => (
-              <Link to={banner.linkUrl} key={banner._id}>
-                <div><img src={banner.imageUrl} alt="Promotional Banner" /></div>
-              </Link>
-            ))}
-          </Carousel>
+        <div className="carousel-wrapper"> {/* New wrapper to center on desktop */}
+          <div className="carousel-container">
+            <Carousel 
+              autoPlay 
+              infiniteLoop 
+              showThumbs={false} 
+              showStatus={false} 
+              interval={5000}
+              showArrows={true}
+            >
+              {banners.map(banner => (
+                <Link to={banner.linkUrl} key={banner._id} className="banner-link">
+                  {/* We use OptimizedImage for speed, but CSS controls the shape */}
+                  <OptimizedImage 
+                    src={banner.imageUrl} 
+                    alt="Promotional Banner" 
+                    className="banner-image" 
+                  />
+                </Link>
+              ))}
+            </Carousel>
+          </div>
         </div>
       )}
       
-      {/* --- Section 2: Shop by Category Showcase --- */}
-      <CategoryShowcase />
-      
-      {/* --- Section 3: Static Promotional Card --- */}
-      {/* THIS IS THE FIX: The PromoCard component is now rendered in its correct place. */}
-      <PromoCard />
+      {/* --- Section 2: Main Content Container --- */}
+      <div className="container">
+        <CategoryShowcase />
+        <PromoCard />
 
-      {/* --- Section 4: Main Product Grid --- */}
-      <section className="product-grid-section">
-        <h2 className="section-title">
-          {user && user.college ? `Recommended for ${user.college.name}` : "Recently Added Items"}
-        </h2>
-        {loading ? <Spinner /> : (
-          <div className="product-grid">
-            {products.length > 0 ? (
-              products.map(product => <ProductCard key={product._id} product={product} />)
-            ) : ( <p className="no-products-message">No products found.</p> )}
-          </div>
-        )}
-      </section>
+        <section className="product-grid-section">
+          <h2 className="section-title">
+            {user && user.college ? `Recommended for ${user.college.name}` : "Recently Added Items"}
+          </h2>
+          {loading ? <Spinner /> : (
+            <div className="product-grid">
+              {products.length > 0 ? (
+                products.map(product => <ProductCard key={product._id} product={product} />)
+              ) : ( <p className="no-products-message">No products found.</p> )}
+            </div>
+          )}
+        </section>
+      </div>
+
     </div>
   );
 };

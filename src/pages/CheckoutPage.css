@@ -1,0 +1,62 @@
+/* src/pages/CheckoutPage.css */
+.checkout-page {
+    max-width: 900px;
+    margin: 0 auto;
+    padding-bottom: 50px;
+}
+
+.checkout-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+}
+
+@media (max-width: 768px) {
+    .checkout-grid {
+        grid-template-columns: 1fr; /* Stack on mobile */
+    }
+    .bill-card {
+        order: -1; /* Show bill first on mobile? Or remove this line to show form first */
+    }
+}
+
+.checkout-form-section {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    height: fit-content;
+}
+
+.checkout-form-section .form-group {
+    margin-bottom: 1rem;
+}
+.checkout-form-section label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+.checkout-form-section input, 
+.checkout-form-section textarea {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+/* ... (Keep existing bill-card styles) ... */
+.bill-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    margin-bottom: 2rem;
+    height: fit-content;
+}
+.bill-item, .bill-row { display: flex; justify-content: space-between; margin-bottom: 0.8rem; color: #555; }
+.bill-total { display: flex; justify-content: space-between; font-weight: bold; font-size: 1.2rem; margin-top: 1rem; color: #333; }
+.payment-option { border: 1px solid #26a541; background-color: #f0fff4; padding: 1rem; border-radius: 8px; color: #26a541; font-weight: 500; margin-top: 1rem; text-align: center;}
+.place-order-btn { width: 100%; background-color: #26a541; color: white; padding: 1rem; border: none; border-radius: 8px; font-size: 1.1rem; font-weight: bold; cursor: pointer; margin-top: 1rem; transition: background 0.2s; }
+.place-order-btn:hover { background-color: #1e8736; }
